@@ -36,3 +36,16 @@ $$\ =\int q(x_{T-1}|x_0) (-D_{KL}(q(x_T|x_{T-1}) || p(x_T))) dx_{T-1}$$
 $$\ = - E_{q(x_{T-1}|x_0)} [D_{KL}(q(x_T|x_{T-1}) || p(x_T))]$$
 
 Similarly, we simplify the third term of equation 44: 
+
+$$\ =\sum_{t=1}^{T-1}E_{q(x_{t-1},x_t,x_{t+1}|x_0)}\left[\log \dfrac{p_\theta(x_t|x_{t+1})}{q(x_t|x_{t-1})}\right]$$
+$$\ =\sum_{t=1}^{T-1}\int q(x_{t-1},x_t,x_{t+1}|x_0)\left[\log \dfrac{p_\theta(x_t|x_{t+1})}{q(x_t|x_{t-1})}\right] dx_{t-1}dx_tdx_{t+1}$$
+$$q(x_{t-1},x_t,x_{t+1}|x_0)\ = q(x_t|x_{t-1},x_{t+1},x_0)q(x_{t-1},x_{t+1}|x_0)$$
+$$q(x_{t-1},x_t,x_{t+1}|x_0)\ = q(x_t|x_{t-1})q(x_{t-1},x_{t+1}|x_0)$$
+$$\ =\sum_{t=1}^{T-1}\int q(x_t|x_{t-1})q(x_{t-1},x_{t+1}|x_0)\left[\log \dfrac{p_\theta(x_t|x_{t+1})}{q(x_t|x_{t-1})}\right] dx_{t-1}dx_tdx_{t+1}$$
+$$\ =\sum_{t=1}^{T-1}\int q(x_{t-1},x_{t+1}|x_0)\left[\int q(x_t|x_{t-1}) \left[\log \dfrac{p_\theta(x_t|x_{t+1})}{q(x_t|x_{t-1})}\right] dx_t \right] dx_{t-1}dx_{t+1}$$
+$$\ =\sum_{t=1}^{T-1}\int q(x_{t-1},x_{t+1}|x_0) (-D_{KL}(q(x_t|x_{t-1}) || p_\theta(x_t|x_{t+1}))) dx_{t-1}dx_{t+1}$$
+$$\ =\ -\sum_{t=1}^{T-1} E_{q(x_{t-1},x_{t+1}|x_0)} [D_{KL}(q(x_t|x_{t-1}) || p_\theta(x_t|x_{t+1}))]$$
+
+This brings us to equation 45, as seen in the paper:
+
+$$\ =E_{q(x_1|x_0)} \left[\log p_\theta(x_0|x_1)\right] \ - E_{q(x_{T-1}|x_0)} [D_{KL}(q(x_T|x_{T-1}) || p(x_T))] \ -\sum_{t=1}^{T-1} E_{q(x_{t-1},x_{t+1}|x_0)} [D_{KL}(q(x_t|x_{t-1}) || p_\theta(x_t|x_{t+1}))]$$
